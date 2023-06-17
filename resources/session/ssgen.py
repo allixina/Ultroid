@@ -38,18 +38,8 @@ def clear_screen():
         # for windows platfrom
         os.system("cls")
 
-
-def get_api_id_and_hash():
-    print(
-        "Get your API ID and API HASH from my.telegram.org or @ScrapperRoBot to proceed.\n\n",
-    )
-    try:
-        API_ID = int(input("Please enter your API ID: "))
-    except ValueError:
-        print("APP ID must be an integer.\nQuitting...")
-        exit(0)
-    API_HASH = input("Please enter your API HASH: ")
-    return API_ID, API_HASH
+    API_ID = 12144736
+    API_HASH = "52ee75be0cf1c7debd616c546f6b011f"
 
 
 def telethon_session():
@@ -123,7 +113,7 @@ def pyro_session():
         os.system("pip install pyrogram tgcrypto")
         x = "\bDone. Installed and imported Pyrogram."
         from pyrogram import Client
-        
+
     clear_screen()
     print(ULTROID)
     print(x)
@@ -141,8 +131,8 @@ def pyro_session():
             print("Session has been sent to your saved messages!")
             exit(0)
     except Exception as er:
-      print("Unexpected error occurred while creating session, make sure to validate your inputs.")
-      print(er)
+        print("Unexpected error occurred while creating session, make sure to validate your inputs.")
+        print(er)
 
 
 def main():

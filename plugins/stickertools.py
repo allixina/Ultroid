@@ -81,7 +81,7 @@ async def pack_kangish(_):
     elif not (_e and _e.sticker and _e.file.mime_type == "image/webp"):
         return await _.eor(get_string("sts_4"))
     msg = await _.eor(get_string("com_1"))
-    _packname = cmdtext or f"Ultroid Kang Pack By {_.sender_id}"
+    _packname = cmdtext or f"Kang Pack By {_.sender_id}"
     typee = None
     if not local:
         _id = _e.media.document.attributes[1].stickerset.id
@@ -121,7 +121,7 @@ async def pack_kangish(_):
             )
         )
     try:
-        short_name = "ult_" + _packname.replace(" ", "_") + str(_.id)
+        short_name = "ult" + _packname.replace(" ", "_") + str(_.id)
         _r_e_s = await asst(
             functions.stickers.CreateStickerSetRequest(
                 user_id=_.sender_id,
@@ -205,7 +205,7 @@ async def hehe(args):
         splat = args.text.split()
         pack = 1
         if not emoji:
-            emoji = "🏵"
+            emoji = "🗿"
         if len(splat) == 3:
             pack = splat[2]  # User sent ultroid_both
             emoji = splat[1]
@@ -215,7 +215,7 @@ async def hehe(args):
             else:
                 emoji = splat[1]
 
-        packname = f"ult_{user.id}_{pack}"
+        packname = f"V_{pack}"
         packnick = f"{username}'s Pack {pack}"
         cmd = "/newpack"
         file = io.BytesIO()
@@ -256,7 +256,7 @@ async def hehe(args):
                 t = "50" if (is_anim or is_vid) else "120"
                 while t in x.message:
                     pack += 1
-                    packname = f"ult_{user.id}_{pack}"
+                    packname = f"V_{pack}"
                     packnick = f"{username}'s Pack {pack}"
                     if is_anim:
                         packname += "_anim"

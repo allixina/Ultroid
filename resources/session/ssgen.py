@@ -1,11 +1,3 @@
-#!/usr/bin/python3
-# Ultroid - UserBot
-# Copyright (C) 2021-2022 TeamUltroid
-#
-# This file is a part of < https://github.com/TeamUltroid/Ultroid/ >
-# PLease read the GNU Affero General Public License in
-# <https://www.github.com/TeamUltroid/Ultroid/blob/main/LICENSE/>.
-
 import os
 from time import sleep
 
@@ -31,15 +23,13 @@ def spinner(x):
 
 
 def clear_screen():
-    # https://www.tutorialspoint.com/how-to-clear-screen-in-python#:~:text=In%20Python%20sometimes%20we%20have,screen%20by%20pressing%20Control%20%2B%20l%20.
-    if os.name == "posix":
-        os.system("clear")
-    else:
-        # for windows platfrom
-        os.system("cls")
+    os.system("cls" if os.name == "nt" else "clear")
 
-    API_ID = 12144736
+
+def get_api_id_and_hash():
+    API_ID = int(12144736)
     API_HASH = "52ee75be0cf1c7debd616c546f6b011f"
+    return API_ID, API_HASH
 
 
 def telethon_session():
@@ -50,55 +40,34 @@ def telethon_session():
     except ImportError:
         print("Installing Telethon...")
         os.system("pip uninstall telethon -y && pip install -U telethon")
-
         x = "\bDone. Installed and imported Telethon."
     clear_screen()
     print(ULTROID)
     print(x)
 
-    # the imports
-
-    from telethon.errors.rpcerrorlist import (
-        ApiIdInvalidError,
-        PhoneNumberInvalidError,
-        UserIsBotError,
-    )
+    from telethon.errors.rpcerrorlist import ApiIdInvalidError, PhoneNumberInvalidError, UserIsBotError
     from telethon.sessions import StringSession
     from telethon.sync import TelegramClient
 
     API_ID, API_HASH = get_api_id_and_hash()
 
-    # logging in
     try:
         with TelegramClient(StringSession(), API_ID, API_HASH) as ultroid:
             print("Generating a string session for •ULTROID•")
-            try:
-                ultroid.send_message(
-                    "me",
-                    f"**ULTROID** `SESSION`:\n\n`{ultroid.session.save()}`\n\n**Do not share this anywhere!**",
-                )
-                print(
-                    "Your SESSION has been generated. Check your Telegram saved messages!"
-                )
-                return
-            except UserIsBotError:
-                print("You are trying to Generate Session for your Bot's Account?")
-                print("Here is That!\n{ultroid.session.save()}\n\n")
-                print("NOTE: You can't use that as User Session..")
-    except ApiIdInvalidError:
-        print(
-            "Your API ID/API HASH combination is invalid. Kindly recheck.\nQuitting..."
-        )
-        exit(0)
-    except ValueError:
-        print("API HASH must not be empty!\nQuitting...")
-        exit(0)
-    except PhoneNumberInvalidError:
-        print("The phone number is invalid!\nQuitting...")
-        exit(0)
-    except Exception as er:
+            ultroid.send_message(
+                "me",
+                f"**ULTROID** `SESSION`:\n\n`{ultroid.session.save()}`\n\n**Do not share this anywhere!**",
+            )
+            print("Your SESSION has been generated. Check your Telegram saved messages!")
+    except (ApiIdInvalidError, ValueError, PhoneNumberInvalidError) as e:
+        print(str(e) + "\nQuitting...")
+    except UserIsBotError:
+        print("You are trying to Generate Session for your Bot's Account?")
+        print(f"Here is That!\n{ultroid.session.save()}\n\n")
+        print("NOTE: You can't use that as User Session..")
+    except Exception as e:
         print("Unexpected Error Occurred while Creating Session")
-        print(er)
+        print(e)
         print("If you think It as a Bug, Report to @UltroidSupportChat.\n\n")
 
 
@@ -108,7 +77,7 @@ def pyro_session():
         from pyrogram import Client
 
         x = "\bFound an existing installation of Pyrogram...\nSuccessfully Imported.\n\n"
-    except BaseException:
+    except ImportError:
         print("Installing Pyrogram...")
         os.system("pip install pyrogram tgcrypto")
         x = "\bDone. Installed and imported Pyrogram."
@@ -118,7 +87,6 @@ def pyro_session():
     print(ULTROID)
     print(x)
 
-    # generate a session
     API_ID, API_HASH = get_api_id_and_hash()
     print("Enter phone number when asked.\n\n")
     try:
@@ -129,21 +97,18 @@ def pyro_session():
                 f"`{ss}`\n\nAbove is your Pyrogram Session String for @TheUltroid. **DO NOT SHARE it.**",
             )
             print("Session has been sent to your saved messages!")
-            exit(0)
-    except Exception as er:
+    except Exception as e:
         print("Unexpected error occurred while creating session, make sure to validate your inputs.")
-        print(er)
+        print(e)
 
 
 def main():
     clear_screen()
     print(ULTROID)
     try:
-        type_of_ss = int(
-            input(
-                "\nUltroid supports both telethon as well as pyrogram sessions.\n\nWhich session do you want to generate?\n1. Telethon Session.\n2. Pyrogram Session.\n\nEnter choice:  "
-            )
-        )
+        type_of_ss = int(input(
+            "\nUltroid supports both telethon as well as pyrogram sessions.\n\nWhich session do you want to generate?\n1. Telethon Session.\n2. Pyrogram Session.\n\nEnter choice:  "
+        ))
     except Exception as e:
         print(e)
         exit(0)
